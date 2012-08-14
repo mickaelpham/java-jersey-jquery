@@ -48,16 +48,24 @@
 			items.push('<tr><th>Contact</th><th>Email</th><th>Phone</th><th colspan="2">Actions</th></tr>');
 			
 			$.each(data,function(id,customer){
-				items.push('<tr><td>' + customer.name + '</td><td><a href="mailto:' + customer.email + '">' + customer.email + '</a></td><td>' + customer.phone + '</td><td><a href="#" class="edit">Edit</a></td><td><a href="rest/customer-' + customer.id + '" class="del">Delete</a></td></tr>');
+				items.push('<tr><td>' + customer.name + '</td><td><a href="mailto:' + customer.email + '">'
+						+ customer.email + '</a></td><td>' + customer.phone + '</td>'
+						+ '<td><a href="#" class="edit">Edit</a></td><td><a href="rest/customer-'
+						+ customer.id + '" class="del">Delete</a></td></tr>');
 			});
 			
 			$('<table/>',{
 				html: items.join('')
 			}).appendTo('#customers');
 			
-			$('a.del').click(function(event){
+			$('.del').click(function(event){
 				event.preventDefault();
-				alert($(this).html());
+				var delUrl = $(this).attr('href');
+				$.ajax({
+					url:delUrl,
+					type:"DELETE"
+				})
+				refreshCustomers();
 			});
 		});
 	}
@@ -70,9 +78,10 @@
 		$('#addForm').submit(function(event){
 			event.preventDefault();
 			//alert($(this).serialize());
-			$.post('rest/customer', $(this).serialize());
-			refreshCustomers();
-			$(this)[0].reset();
+			$.post('rest/customer', $(this).serialize(), function(){
+				refreshCustomers();
+				$('#addForm')[0].reset();
+			});
 		});
 	});
 	</script>

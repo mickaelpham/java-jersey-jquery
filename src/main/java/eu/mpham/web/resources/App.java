@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -39,8 +41,13 @@ public class App {
 	@Path("customer")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public void postCustomer(@FormParam("name") String name, @FormParam("email") String email, @FormParam("phone") String phone) {
-//		System.out.println("Added new customer: " + name + " (" + email + ")");
 		Customer c = new Customer(name, email, phone);
 		customers.put(c.getId(), c);
+	}
+	
+	@DELETE
+	@Path("customer-{id}")
+	public void deleteCustomer(@PathParam("id") Integer id) {
+		customers.remove(id);
 	}
 }
