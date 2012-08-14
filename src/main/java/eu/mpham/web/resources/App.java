@@ -25,9 +25,7 @@ public class App {
 	
 	static {
 		customers = new HashMap<Integer, Customer>();
-		Customer c = new Customer("Mickael Pham", "mickael.pham@outlook.com", "+1 (408) 646-0219");
-		customers.put(c.getId(), c);
-		c = new Customer("Henry Chea", "vir4k@gmail.com", "+1 (408) 931-1041");
+		Customer c = new Customer("Mickael Pham", "mickael.pham@outlook.com", "+1 (408) 931-1041");
 		customers.put(c.getId(), c);
 	}
 
