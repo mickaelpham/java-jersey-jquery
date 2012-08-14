@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<!--[if lt IE 7 ]><html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]><html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]><html class="ie ie8" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html lang="en"> <!--<![endif]-->
+<head>
+
+	<!-- Basic Page Needs
+  ================================================== -->
+	<meta charset="utf-8">
+	<title>Home | Printer WebApp</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<!-- Mobile Specific Metas
+  ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<!-- CSS
+  ================================================== -->
+	<link rel="stylesheet" href="css/base.css" />
+	<link rel="stylesheet" href="css/skeleton.css" />
+	<link rel="stylesheet" href="css/layout.css" />
+	<link rel="stylesheet" href="css/styles.css" />
+
+	<!--[if lt IE 9]>
+		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- Favicons
+	================================================== -->
+	<link rel="shortcut icon" href="img/favicon.ico">
+	<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="img/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="img/apple-touch-icon-114x114.png">
+	
+	<!-- JavaScripts
+	================================================== -->
+	<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+	<script type="text/javascript">
+	function refreshCustomers() {
+		$('#customers').empty();
+		
+		$.getJSON('rest/customers',function(data){
+			$('#load').hide();
+			
+			var items = [];
+			items.push('<tr><th>Contact</th><th>Email</th><th>Phone</th><th colspan="2">Actions</th></tr>');
+			
+			$.each(data,function(id,customer){
+				items.push('<tr><td>' + customer.name + '</td><td><a href="mailto:' + customer.email + '">' + customer.email + '</a></td><td>' + customer.phone + '</td><td><a href="#" class="edit">Edit</a></td><td><a href="rest/customer-' + customer.id + '" class="del">Delete</a></td></tr>');
+			});
+			
+			$('<table/>',{
+				html: items.join('')
+			}).appendTo('#customers');
+			
+			$('a.del').click(function(event){
+				event.preventDefault();
+				alert($(this).html());
+			});
+		});
+	}
+	
+	$(function(){
+		$('#load').click(function(){
+			refreshCustomers();
+		});
+		
+		$('#addForm').submit(function(event){
+			event.preventDefault();
+			//alert($(this).serialize());
+			$.post('rest/customer', $(this).serialize());
+			refreshCustomers();
+			$(this)[0].reset();
+		});
+	});
+	</script>
+	
+</head>
+<body>
+
+
+
+	<!-- Primary Page Layout
+	================================================== -->
+
+	<!-- Delete everything in this .container and get started on your own site! -->
+
+	<div class="container">
+	
+		<div class="sixteen columns">
+			<h1 style="margin-top: 40px"><a href="index.html" style="text-decoration: none;">Customers</a></h1>
+			
+			<div id="customers"></div>
+			
+			<div><button id="load">Load Customers</button></div>
+			
+			<h2 style="margin-top:30px">Add a customer</h2>
+			
+			<form id="addForm" action="/">
+				<label for="name">Name</label>
+				<input type="text" id="name" name="name" />
+				
+				<label for="email">Email</label>
+				<input type="text" id="email" name="email" />
+				
+				<label for="phone">Phone #</label>
+				<input type="text" id="phone" name="phone" />
+				
+				<button type="submit">Add customer</button>
+			</form>
+			
+		</div>
+	
+	</div><!-- container -->
+
+
+<!-- End Document
+================================================== -->
+</body>
+</html>
