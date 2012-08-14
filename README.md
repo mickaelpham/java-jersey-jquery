@@ -1,4 +1,4 @@
-Getting started with Jersey (JAX-RS implementation) and jQuery
+Getting started with Jersey (JAX-RS) and jQuery
 ==============================================================
 
 The purpose of this project is to manipulate the Jersey framework, an
@@ -14,8 +14,11 @@ Technologies Used
 * [Maven](http://maven.apache.org/) - build tool
 * [Jetty](http://jetty.codehaus.org/jetty/) - embedded HTTP server and servlet
 container
+* [Skeleton](http://www.getskeleton.com/) - a responsive CSS theme
 
 Build and run the projet
 ------------------------
 
     $ mvn clean install jetty:run
+
+And then, open your web browser to `http://localhost:8080/` to see the magic..

@@ -10,6 +10,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -26,15 +27,22 @@ public class App {
 		customers = new HashMap<Integer, Customer>();
 		Customer c = new Customer("Mickael Pham", "mickael.pham@outlook.com", "+1 (408) 646-0219");
 		customers.put(c.getId(), c);
-		c = new Customer("Jenny Murray", "jennydmurray@gmail.com", "+1 (951) 329-1745");
+		c = new Customer("Henry Chea", "vir4k@gmail.com", "+1 (408) 931-1041");
 		customers.put(c.getId(), c);
 	}
 
 	@GET
 	@Path("customers")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Customer> getCustomerInJSON() {
+	public List<Customer> getCustomersInJSON() {
 		return new ArrayList<Customer>(customers.values());
+	}
+	
+	@GET
+	@Path("customer-{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Customer getCustomer(@PathParam("id") Integer customerId) {
+		return customers.get(customerId);
 	}
 	
 	@POST
@@ -43,6 +51,16 @@ public class App {
 	public void postCustomer(@FormParam("name") String name, @FormParam("email") String email, @FormParam("phone") String phone) {
 		Customer c = new Customer(name, email, phone);
 		customers.put(c.getId(), c);
+	}
+	
+	@PUT
+	@Path("customer-{id}")
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	public void updateCustomer(@PathParam("id") Integer customerId, @FormParam("name") String name, @FormParam("email") String email, @FormParam("phone") String phone) {
+		Customer c = customers.get(customerId);
+		c.setName(name);
+		c.setEmail(email);
+		c.setPhone(phone);
 	}
 	
 	@DELETE
